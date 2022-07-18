@@ -39,6 +39,7 @@ Route::post('/save-recruitment-comment', [App\Http\Controllers\RecruitmentInform
 // 07/07/2022 Created By Er. Sanjay Kumar
 Route::get('/interview-evaluation', [App\Http\Controllers\RecruitmentInformationController::class, 'InterviewEvaluation'])->name('interview-evaluation');
 Route::get('/create-interview-evaluation', [App\Http\Controllers\RecruitmentInformationController::class, 'CreateInterviewEvaluation'])->name('create-interview-evaluation');
+Route::get('/interviewevaluationview/{id}', [App\Http\Controllers\RecruitmentInformationController::class, 'interviewevaluationview'])->name('interview-evaluation-view');
 Route::post('/save-interview-evaluation', [App\Http\Controllers\RecruitmentInformationController::class, 'SaveInterviewEvaluation'])->name('save-interview-evaluation');
 Route::get('/interview-evaluation-feedback/{id}/{interviewers}', [App\Http\Controllers\RecruitmentInformationController::class, 'InterviewEvaluationFeedback'])->name('interview-evaluation-feedback');
 Route::post('/save-interview-evaluation-feedback', [App\Http\Controllers\RecruitmentInformationController::class, 'SaveInterviewEvaluationFeedback'])->name('save-interview-evaluation-feedback');
