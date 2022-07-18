@@ -30,16 +30,21 @@
       <div class="col-12">
         <div class="card my-4">
           <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-            <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-              <h6 class="text-white text-capitalize ps-3">Interview Evaluation List</h6>
+            <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3 d-flex justify-content-between px-3">
+              <h6 class="text-white text-capitalize">Interview Evaluation List</h6>
+                <a style="color: #fff; border: 1px solid #fff; line-height: 2; padding: 0 9px; border-radius: 8px;"  href="{{route('create-interview-evaluation')}}">
+                  Create Interview
+                </a>
             </div>
+              
           </div>
+
           <div class="card-body px-0 pb-2">
             <div class="table-responsive p-0">
                 <table class="table align-items-center mb-0">
                   <thead>
                     <tr>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Date of Request</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Date of Request</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Candidate Name</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Skill/Technology</th>
                       <!-- <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Skills</th>
@@ -51,148 +56,17 @@
                   <tbody>
                     @if(count($recruitmentData)>0)
                         @foreach($recruitmentData as $data)
+                        <?php //echo '<pre>'; print_r($data);?>
                             <tr>
                                 <td class="align-middle text-center text-sm">
-                                    <a href="{{route('recruitment-view',['id'=>$data->id])}}" data-bs-toggle="tooltip" data-bs-placement="top" title="click here for view"><b>{{$data->date_of_request}}</b></a>
-                                </td>
-                                <!-- <td class="align-middle text-center text-sm">
-                                    {{$data->positions}}
-                                </td> -->
-                                <td class="align-middle text-center text-sm">
-                                    @php
-                                      if(isset($data->years_of_experience))
-                                      {
-                                        $expArr = explode(',',$data->years_of_experience);
-                                        $postitionArr = explode(',',$data->positions);
-                                        if(count($expArr)>0)
-                                        { 
-                                          foreach($expArr as $k=>$arr)
-                                          {
-                                            $num = $k+1;
-                                            echo $num.'.&nbsp;';
-                                            echo 'Experience : '.$arr.'&nbsp;,&nbsp;';
-                                            echo 'Positions : '.$postitionArr[$k].'</br>';
-                                            //echo '<hr>';
-                                          }
-                                        }
-                                      }
-                                    @endphp
-                                </td>
-                                <!-- <td class="align-middle text-center text-sm">
-                                    {{$data->designation}}
-                                </td> -->
-                                <td class="align-middle text-center text-sm">
-                                    {{$data->department}}
+                                    <a href="{{route('interview-evaluation-view',['id'=>$data->id])}}" data-bs-toggle="tooltip" data-bs-placement="top" title="click here for view"><b>{{$data->date_of_request}}</b></a>
                                 </td>
                                 <td class="align-middle text-center text-sm">
-                                    {{$data->mandatory_skills}}
+                                    {{$data->candidate_name}}
                                 </td>
                                 <td class="align-middle text-center text-sm">
-                                @php
-                                  if(isset($data['RecInterviewerList']))
-                                  {
-                                    if(count($data['RecInterviewerList'])>0)
-                                    {
-                                      foreach($data['RecInterviewerList'] as $k=>$interviewer)
-                                      {
-                                        if(count($data['RecInterviewerList'])>$k+1)
-                                        {
-                                          $commaSep = ',';
-                                        }
-                                        else
-                                        {
-                                          $commaSep = '';
-                                        }
-                                        if(isset($interviewer['Interviewer']))
-                                        {
-                                          echo $interviewer['Interviewer']['name'].' ('.$interviewer['Interviewer']['designation'].')'.$commaSep;
-                                        }
-                                        else
-                                        {
-                                          echo '-';
-                                        }
-                                        $k++;
-                                      }
-                                    }
-                                    else
-                                    {
-                                      echo '-';
-                                    }
-                                  }
-                                  else
-                                  {
-                                    echo '-';
-                                  }
-                                @endphp
-                                </td>
-                                <td class="align-middle text-center text-sm">
-                                    @if($data->status==1)
-                                        <span class="badge badge-sm bg-gradient-secondary">Pending</span>
-                                    @elseif($data->status==2)
-                                        <span class="badge badge-sm badge-warning" style="background-color: #FFA726;">In Progress</span>
-                                    @else
-                                        <span class="badge badge-sm bg-gradient-success">Completed</span>
-                                    @endif
-                                </td>
-                                <td class="align-middle text-center text-sm">
-                                  <a href="{{route('recruitment-comments',['id'=>$data->id])}}"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="Comments"><i class="fa fa-eye text-sm me-2"></i></a>
-                                  </br>
-                                  @if((auth()->user()->employee_type==1|| auth()->user()->employee_type==3) && ($data->status==1 || $data->status==2))
-                                  <a data-bs-toggle="tooltip" data-bs-placement="bottom" title="Reply"><i class="fa fa-reply text-sm me-2" data-bs-toggle="modal" data-bs-target="#exampleModal{{$data->id}}"></i></a>
-                                  <!-- Modal -->
-                                  <div class="modal fade" id="exampleModal{{$data->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <!-- <div class="modal fade" id="myModal" role="dialog"> -->
-                                    <div class="modal-dialog">
-                                    
-                                      <!-- Modal content-->
-                                      <div class="modal-content">
-                                        <div class="modal-header">
-                                          <h4 class="modal-title">Reply on Request</h4>
-                                          <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
-                                        </div>
-                                        <form method="post" action="{{route('save-recruitment-comment')}}">
-                                          @csrf
-                                          <input type="hidden" name="rec_id" value="{{$data->id}}">
-                                        <div class="modal-body">
-                                          <div class="row my-2">
-                                            <div class="col-lg-12 col-md-12 col-12 mx-auto">
-                                              <label class="form-label" style="float: left;">Comment</label>
-                                              <div class="input-group input-group-outline">
-                                                <textarea id="comments" class="form-control" name="comments" required  placeholder="Comment on the request"></textarea>
-                                              </div>
-                                            </div>
-                                          </div> 
-                                          <div class="row my-2">
-                                            <div class="col-lg-12 col-md-12 col-12 mx-auto">
-                                              <label class="form-label" style="float: left;">Status</label>
-                                              <div class="input-group input-group-outline">
-                                                <select class="form-control" required name="status">
-                                                    <option value="">Select Status</option>
-                                                    <option value="2">InProgress</option>
-                                                    <option value="3">Completed</option>
-                                                </select>
-                                              </div>
-                                            </div>
-                                          </div> 
-
-                                        </div>
-                                        <div class="modal-footer">
-                                          <div class="row my-2">
-                                            <div class="col-lg-6 col-sm-6 col-12">
-                                              <button class="btn bg-gradient-success w-100 mb-0 toast-btn" type="submit" data-target="successToast">Save</button>
-                                            </div>
-                                            <div class="col-lg-6 col-sm-6 col-12 mt-lg-0 mt-2">
-                                              <button type="button" class="btn bg-gradient-default" data-bs-dismiss="modal">Close</button>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </form>
-                                      </div>
-                                      
-                                    </div>
-                                  </div>
-                                  @endif
-                                </td>                                                          
+                                    {{$data->skill}}
+                                </td>                                               
                             </tr>
                         @endforeach
                     @else

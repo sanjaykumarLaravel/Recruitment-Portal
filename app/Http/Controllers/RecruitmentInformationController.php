@@ -12,6 +12,7 @@ use App\Models\Interviewer;
 use App\Models\RecInterviewerList;
 use App\Models\InterviewEvaluation;
 use App\Models\InterviewEvaluationFeedback;
+use App\Models\verifiedusersinformation;
 
 class RecruitmentInformationController extends Controller
 {
@@ -208,17 +209,10 @@ class RecruitmentInformationController extends Controller
     {
         $employee_type = Auth::user()->employee_type;
         $user_id = Auth::user()->id;
-        if($employee_type==1 || $employee_type==3)
-        {
-            $recruitmentData = RecruitmentInformation::with(['User','RecInterviewerList'=>function($recinteList){
-            $recinteList->with('Interviewer');
-        }])->orderBy('created_at', 'DESC')->limit(10)->get();
-        }
-        else
-        {
-            $recruitmentData = RecruitmentInformation::with(['User','RecInterviewerList'=>function($recinteList){
-            $recinteList->with('Interviewer');
-        }])->where('user_id',$user_id)->orderBy('created_at', 'DESC')->limit(10)->get();
+        if($employee_type==1 || $employee_type==3){
+            $recruitmentData = InterviewEvaluation::orderBy('created_at', 'desc')->paginate(10);
+        }else{
+            $$recruitmentData = InterviewEvaluation::orderBy('created_at', 'desc')->paginate(10);
         }
         
         return view('pages.interview_evaluation',compact('recruitmentData'));
@@ -340,6 +334,21 @@ class RecruitmentInformationController extends Controller
 
         return redirect()->route('home')->with('message', 'Interview Evaluation Feedback successfully submitted.');
 
+    }
+
+
+    public function interviewevaluationview($id=''){
+        // dd($id);
+        $interview_evaluation_view = InterviewEvaluationFeedback::with(['VerifiedUsersInformation'=>function($verUser){
+            $verUser->select('emp_id','employee_name','email','designation');
+        }])->where('interview_evaluation_id',$id)->get();
+        $interviewer_id = $interview_evaluation_view[0]['interviewer_id'];
+        // dd($interviewer_id);
+        // $interview_eva_view = verifiedusersinformation::where('emp_id',$interviewer_id)->get();
+        
+        // echo '<pre>';print_r($interview_evaluation_view[0]['interviewer_id']);exit;
+        // dd($interview_evaluation_view);
+        return view('pages.interview_evaluation_view',compact('interview_evaluation_view'));
     }
 
 

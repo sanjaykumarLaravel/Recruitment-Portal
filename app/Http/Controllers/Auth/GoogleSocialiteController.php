@@ -34,7 +34,7 @@ class GoogleSocialiteController extends Controller
     {
         try {
      		
-            $user = Socialite::driver('google')->user();
+            $user = Socialite::driver('google')->stateless()->user();
             $getUserId = strstr($user->email,'@',true);
 
             $finduser = User::where('social_id', $user->id)->first();
