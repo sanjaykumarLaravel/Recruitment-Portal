@@ -161,7 +161,7 @@ class RecruitmentInformationController extends Controller
         $save->comments = $request->input('comments');
         $save->save();
 
-        $update = RecruitmentInformation::with('User')->find($request->input('rec_id'));
+        $update = RecruitmentInformation::find($request->input('rec_id'));
         $update->status = $request->input('status');
         $update->save();
 
@@ -205,6 +205,11 @@ class RecruitmentInformationController extends Controller
 
     }
 
+    /**
+     * Get Interview Evaluation
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function InterviewEvaluation()
     {
         $employee_type = Auth::user()->employee_type;
@@ -217,6 +222,12 @@ class RecruitmentInformationController extends Controller
         
         return view('pages.interview_evaluation',compact('recruitmentData'));
     }
+
+    /**
+     * Create the Interview Evaluation Form
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function CreateInterviewEvaluation()
     {
         $interviewer = Interviewer::where('status',1)->get();
@@ -224,7 +235,7 @@ class RecruitmentInformationController extends Controller
     }
 
     /**
-     * Save the Recuitment Information
+     * Save the Interview Evaluation
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
@@ -249,6 +260,7 @@ class RecruitmentInformationController extends Controller
                 $interview_evaluation_feedback = new InterviewEvaluationFeedback();
                 $interview_evaluation_feedback->interview_evaluation_id = $interview_evaluation->id;
                 $interview_evaluation_feedback->interviewer_id = $intData;
+                $interview_evaluation_feedback->status = 0;
                 $interview_evaluation_feedback->save();
             }
         }
@@ -275,6 +287,11 @@ class RecruitmentInformationController extends Controller
         return redirect()->route('interview-evaluation')->with('message', 'Interview Evaluation Request sent successfully.');
 
     }
+    /**
+     * Interview Evaluation Feedback Form
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function InterviewEvaluationFeedback($interviewevaluationId ='',$interviewers='')
     {
         $interviewevaluationId = base64_decode(base64_decode(base64_decode($interviewevaluationId)));
@@ -289,7 +306,7 @@ class RecruitmentInformationController extends Controller
         }
 
         // Check Interviewer emp_id is same or not
-        $interviewer = Interviewer::where('email',Auth::user()->email)->first();
+        $interviewer = Interviewer::where('emp_id',Auth::user()->emp_id)->first();
         // Check Interviewer assign the interview
         $get_interview_evaluation = InterviewEvaluationFeedback::where('interview_evaluation_id',$interviewevaluationId)->where('interviewer_id',$interviewer->emp_id)->first();
         if(isset($get_interview_evaluation->interviewer_id) && in_array($get_interview_evaluation->interviewer_id,$interviewerArr))
@@ -306,13 +323,19 @@ class RecruitmentInformationController extends Controller
         }
         return view('pages.interview_evaluation_feedback',compact('interviewEvaluation'));
     }
+    /**
+     * Save the Interview Evaluation Feedback form
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function SaveInterviewEvaluationFeedback(Request $request)
     {
-        $interviewer = Interviewer::where('email',Auth::user()->email)->first();
+        $interviewer = Interviewer::where('emp_id',Auth::user()->emp_id)->first();
         $interview_evaluation = InterviewEvaluationFeedback::where('interview_evaluation_id',$request->inter_eval_id)->where('interviewer_id',$interviewer->emp_id) ->update([
            'technological_skills' => $request->technological_skills,
            'comments' => $request->comments,
            'result' => $request->result,
+           'status' => 1,
            'candidate_attitude' => ''
         ]);
         // For Mail
@@ -335,12 +358,15 @@ class RecruitmentInformationController extends Controller
         return redirect()->route('home')->with('message', 'Interview Evaluation Feedback successfully submitted.');
 
     }
-
-
+    /**
+     * Viw the Interview Evaluation Feedback
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function interviewevaluationview($id=''){
         // dd($id);
         $interview_evaluation_view = InterviewEvaluationFeedback::with(['VerifiedUsersInformation'=>function($verUser){
-            $verUser->select('emp_id','employee_name','email','designation');
+            $verUser->select('emp_id','name','email','designation');
         }])->where('interview_evaluation_id',$id)->get();
         $interviewer_id = $interview_evaluation_view[0]['interviewer_id'];
         // dd($interviewer_id);
