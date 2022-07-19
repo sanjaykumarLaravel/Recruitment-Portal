@@ -13,6 +13,6 @@ class InterviewEvaluationFeedback extends Model
 
     public function VerifiedUsersInformation()
 	{
-	    return $this->hasOne(VerifiedUsersInformation::class,'emp_id','interviewer_id');
+	    return $this->hasOne(Interviewer::class,'emp_id','interviewer_id');
 	}
 }
