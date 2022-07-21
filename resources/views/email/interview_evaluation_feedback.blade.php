@@ -14,24 +14,24 @@
 	<table>
 
 		<tr>
-			<td>Candidate Name : </td>
-			<td>{{ $candidate_name }}</td>
+			<th style="text-align:left">Candidate Name : </th>
+			<td style="text-align:left">{{$candidate_name}}</td>
 		</tr>
 		<tr>
-			<td>Skill / Technology : </td>
-			<td>{{ $skill }}</td>
+			<th style="text-align:left">Skill / Technology : </th>
+			<td style="text-align:left">{{$skill}}</td>
 		</tr>
 		<tr>
-			<td>Technological Skills : </td>
-			<td>{{ $technological_skills }}</td>
+			<th style="text-align:left">Technological Skills : </th>
+			<td style="text-align:left">{{$technological_skills}}</td>
 		</tr>
 		<tr>
-			<td>Result : </th>
-			<td>{{ $result }}</td>
+			<th style="text-align:left">Result : </th>
+			<td style="text-align:left">{{$result}}</td>
 		</tr>
 		<tr>
-			<td>Comments : </td>
-			<td>{!!$comments!!}</td>
+			<th style="text-align:left">Comments : </th>
+			<td style="text-align:left">{!!$comments!!}</td>
 		</tr>
 	</table>
     </br>

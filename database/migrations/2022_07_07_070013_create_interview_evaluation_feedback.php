@@ -21,6 +21,7 @@ class CreateInterviewEvaluationFeedback extends Migration
             $table->string('comments')->nullable();
             $table->string('candidate_attitude')->nullable();
             $table->string('result')->nullable();
+            $table->integer('status');
             $table->timestamps();
         });
     }

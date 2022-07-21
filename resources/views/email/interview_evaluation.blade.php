@@ -8,7 +8,6 @@
     </p>
     </br>
     </br>
-    <!-- <p> I email you today to ask regarding {{$candidate_name}}. So I request to you please proivde the feedback on below link.</p> -->
     <p>Please give your feedback regarding {{$candidate_name ?? ''}}.
     </br>
     <p><b>Note:</b> Please take this up urjently.</p>	

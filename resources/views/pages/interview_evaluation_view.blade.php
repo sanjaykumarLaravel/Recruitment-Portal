@@ -41,24 +41,44 @@
                       <div class="container my-auto">
                           <div class="row">
                             <div class="col-lg-6 col-md-6 col-12 mx-auto">
-                              <label class="form-label">Interviewer Name:</label> <h6>{{ $data['VerifiedUsersInformation']->employee_name ?? '-'}}({{ $data['VerifiedUsersInformation']->designation ?? '-' }})</h6>
+                              <label class="form-label">Interviewer Name:</label> <h6>{{ $data['VerifiedUsersInformation']->name ?? '-'}}({{ $data['VerifiedUsersInformation']->designation ?? '-' }})</h6>
                             </div>
                             <div class="col-lg-6 col-md-6 col-12 mx-auto">
-                              <label class="form-label"></label><h6></h6>
+                              <label class="form-label"> Status: </label>
+                              <h6>
+                                @if($data->status==0)
+                                    <span class="badge badge-sm bg-gradient-secondary">Pending</span>
+                                @else
+                                    <span class="badge badge-sm bg-gradient-success">Completed</span>
+                                @endif
+                              </h6>
                             </div>
                           </div>
                       </div> 
+                      @if($data->status==1)
                       <div class="container my-auto">                    
                         <div class="row">
                           <div class="col-lg-6 col-md-6 col-12 mx-auto">
-                            <label class="form-label">Comments:</label> <h6>{{ $data->comments ?? '-' }}</h6>
+                            <label class="form-label">Technological Skills:</label> <h6>{{ $data->technological_skills ?? '-' }}</h6>
                           </div>
 
                           <div class="col-lg-6 col-md-6 col-12 mx-auto">
-                            <label class="form-label">Position Required by Date::</label><h6>{{ $data->technological_skills ?? '-' }}</h6>
+                            <label class="form-label">Result:</label><h6>{{ $data->technological_skills ?? '-' }}</h6>
                           </div>
                         </div>
                       </div>
+                      <div class="container my-auto">                    
+                        <div class="row">
+                          <div class="col-lg-12 col-md-12 col-12 mx-auto">
+                            <label class="form-label">Comments:</label> <h6>{!! $data->comments ?? '-' !!}</h6>
+                          </div>
+
+                          <!-- <div class="col-lg-6 col-md-6 col-12 mx-auto">
+                          </div> -->
+                        </div>
+                      </div>
+                      @endif
+
                       @php $i++;@endphp
                       @if(count($interview_evaluation_view)>$i)
                       <hr/>

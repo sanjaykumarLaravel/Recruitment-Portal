@@ -33,7 +33,7 @@
             <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3 d-flex justify-content-between px-3">
               <h6 class="text-white text-capitalize">Interview Evaluation List</h6>
                 <a style="color: #fff; border: 1px solid #fff; line-height: 2; padding: 0 9px; border-radius: 8px;"  href="{{route('create-interview-evaluation')}}">
-                  Create Interview
+                  Create Interview Evaluation
                 </a>
             </div>
               

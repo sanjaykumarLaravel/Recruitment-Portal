@@ -53,6 +53,7 @@ class GoogleSocialiteController extends Controller
                         'name' => $user->name,
                         'email' => $user->email,
                         'employee_type'=> $findEmployeeType->role_id,
+                        'emp_id'=> $findEmployeeType->emp_id,
                         'social_id'=> $user->id,
                         'social_type'=> 'google',
                         'password' => Hash::make('12345678')
