@@ -7,37 +7,36 @@
     <p>Dear Team,</p>
     </br>
     </br>
-    <p>Please check the below interview feedback.
+    <p>Please check the below interview feedback:
     </br>	
     <p>
 	</br>
 	<table>
 
 		<tr>
-			<th>Candidate Name : </th>
-			<td>{{$candidate_name}}</td>
+			<td>Candidate Name : </td>
+			<td>{{ $candidate_name }}</td>
 		</tr>
 		<tr>
-			<th>Skill / Technology : </th>
-			<td>{{$skill}}</td>
+			<td>Skill / Technology : </td>
+			<td>{{ $skill }}</td>
 		</tr>
 		<tr>
-			<th>Technological Skills : </th>
-			<td>{{$technological_skills}}</td>
+			<td>Technological Skills : </td>
+			<td>{{ $technological_skills }}</td>
 		</tr>
 		<tr>
-			<th>Result : </th>
-			<td>{{$result}}</td>
+			<td>Result : </th>
+			<td>{{ $result }}</td>
 		</tr>
 		<tr>
-			<th>Comments : </th>
+			<td>Comments : </td>
 			<td>{!!$comments!!}</td>
 		</tr>
 	</table>
     </br>
     </br>
-    <p>
-    	Thanks
-    </p>
+    <p>Thanks</p>
+    <p>{{ $name ?? ''}}</p>
 </body>
 </html>
