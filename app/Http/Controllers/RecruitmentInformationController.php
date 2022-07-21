@@ -115,7 +115,7 @@ class RecruitmentInformationController extends Controller
             Mail::send('email.request', $data, function($message) use ($emails, $requestStatus, $name) {
                 $message->to($emails);
                 $message->from('hrd@netprophetsglobal.com', 'hrd'); 
-                $message->subject("You have got a new Recruitment request from $name");
+                $message->subject("You have got a new Recruitment request from -- $name");
             });
         }
         catch(Exception $e){
@@ -278,7 +278,7 @@ class RecruitmentInformationController extends Controller
             Mail::send('email.interview_evaluation', $data, function($message) use ($emails,$candidate_name) {
                 $message->to($emails);
                 $message->from('hrd@netprophetsglobal.com', 'hrd'); 
-                $message->subject("We value your feedback for $candidate_name");
+                $message->subject("We value your feedback for -- $candidate_name");
             });
         }
         catch(Exception $e){
@@ -350,7 +350,7 @@ class RecruitmentInformationController extends Controller
             Mail::send('email.interview_evaluation_feedback', $data, function($message) use ($emails, $candidate_name) {
                 $message->to($emails);
                 $message->from('hrd@netprophetsglobal.com', 'hrd'); 
-                $message->subject("Intervew Feedback $candidate_name");
+                $message->subject("Intervew Feedback - $candidate_name");
             });
         }
         catch(Exception $e){

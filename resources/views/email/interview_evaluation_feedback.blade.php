@@ -36,7 +36,8 @@
 	</table>
     </br>
     </br>
-    <p>Thanks</p>
-    <p>{{ $name ?? ''}}</p>
+    <p>
+		Thanks,</br><br>{{ $name ?? ''}}
+	</p>
 </body>
 </html>
