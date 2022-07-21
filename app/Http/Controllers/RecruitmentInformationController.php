@@ -109,12 +109,13 @@ class RecruitmentInformationController extends Controller
             $requestStatus = 'Pending';
             // $emails = array('lydia.george@netprophetsglobal.com','Shobhana.Bansal@netprophetsglobal.com');
             $emails = array('sanjay.kumar@netprophetsglobal.com','jugendra.singh@netprophetsglobal.com','ankit.katiyar@netprophetsglobal.com');
+            $name = Auth::user()->name;
             $data = ['requestStatus' => $requestStatus,'designation'=>$request->input('designation'),'name'=>Auth::user()->name];
 
-            Mail::send('email.request', $data, function($message) use ($emails, $requestStatus) {
+            Mail::send('email.request', $data, function($message) use ($emails, $requestStatus, $name) {
                 $message->to($emails);
                 $message->from('hrd@netprophetsglobal.com', 'hrd'); 
-                $message->subject('You have got a new Recruitment request from '.Auth::user()->name.'');
+                $message->subject("You have got a new Recruitment request from $name");
             });
         }
         catch(Exception $e){
