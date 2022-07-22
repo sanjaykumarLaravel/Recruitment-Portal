@@ -22,7 +22,7 @@
 			<td style="text-align:left">{{$skill}}</td>
 		</tr>
 		<tr>
-			<th style="text-align:left">Technological Skills : </th>
+			<th style="text-align:left">Expertise Level : </th>
 			<td style="text-align:left">{{$technological_skills}}</td>
 		</tr>
 		<tr>
@@ -37,7 +37,7 @@
     </br>
     </br>
     <p>
-		Thanks,</br><br>{{ $name ?? ''}}
-	</p>
+    	Thanks,</br><br>{{$projectManager}}
+    </p>
 </body>
 </html>
