@@ -108,7 +108,8 @@ class RecruitmentInformationController extends Controller
         try{
             $requestStatus = 'Pending';
             // $emails = array('lydia.george@netprophetsglobal.com','Shobhana.Bansal@netprophetsglobal.com');
-            $emails = array('sanjay.kumar@netprophetsglobal.com','jugendra.singh@netprophetsglobal.com');
+            $emails = array('sanjay.kumar@netprophetsglobal.com','jugendra.singh@netprophetsglobal.com','ankit.katiyar@netprophetsglobal.com');
+            $name = Auth::user()->name;
             $data = ['requestStatus' => $requestStatus,'designation'=>$request->input('designation'),'name'=>Auth::user()->name];
             $name = Auth::user()->name;
             Mail::send('email.request', $data, function($message) use ($emails, $requestStatus,$name) {
@@ -270,6 +271,8 @@ class RecruitmentInformationController extends Controller
         try{
             // Get Interviewer Email Ids for Mail
             $interviewerEmails = Interviewer::whereIn('emp_id',$interviewer)->get()->toArray();
+            $names = array_column($interviewerEmails, 'name');
+            $pm_names_array = implode(", ",$names);
             $emails = array_column($interviewerEmails, 'email');
             $recipientsName = array_column($interviewerEmails, 'name');
             $recipientsArr = array_combine($emails,$recipientsName);
