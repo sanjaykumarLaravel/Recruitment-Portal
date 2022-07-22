@@ -9,9 +9,9 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
             <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
-            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Add New Request</li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Raise a Request</li>
           </ol>
-          <h6 class="font-weight-bolder mb-0">Add New Request</h6>
+          <h6 class="font-weight-bolder mb-0">Raise a Request</h6>
         </nav>
       </div>
     </nav>
@@ -21,7 +21,7 @@
         <div class="card my-4">
           <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
             <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-              <h6 class="text-white text-capitalize ps-3">Add New Request</h6>
+              <h6 class="text-white text-capitalize ps-3">Raise a Request</h6>
             </div>
           </div>
           <div class="card-body px-0 pb-2">

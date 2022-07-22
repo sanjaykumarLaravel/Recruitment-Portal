@@ -7,8 +7,8 @@
     <p>Hi {{$name}},</p>
     </br>
     </br>
-        <p>Please give your feedback regarding {{$candidate_name}}.</p>
-    </br>	
+    <p>Please give your feedback regarding -- {{$candidate_name ?? ''}}.
+    </br>
     <p>
         <b>Note:<b> Please take this up urgently.</br><br>
     	<a href="http://localhost:8000/interview-evaluation-feedback/{{$interview_evaluation_id}}/{{$interviewerString}}">Click Here</a>
@@ -17,7 +17,7 @@
     </br>
     </br>
     <p>
-    	Thanks,</br><br>Team HR.
+        Thanks,</br><br>Team HR
     </p>
 </body>
 </html>
