@@ -4,7 +4,13 @@
     <title>NetProphets Cyberworks Pvt. Ltd.</title>
 </head>
 <body>
-    <p>Hi</p>
-    <p>You have received new request for {{$designation}} by {{$name}}.</b></p>
+    <p>Hi HR Team,</p>
+    <p>You have recieved a new request for the {{$designation}} from {{$name}}.</b></p>
+    </br>
+    </br>
+    </br>
+    <p>
+    	Thanks,</br><br>{{$name}}
+    </p>
 </body>
 </html>

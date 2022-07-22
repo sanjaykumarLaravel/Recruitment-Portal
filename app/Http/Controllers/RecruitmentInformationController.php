@@ -110,11 +110,11 @@ class RecruitmentInformationController extends Controller
             // $emails = array('lydia.george@netprophetsglobal.com','Shobhana.Bansal@netprophetsglobal.com');
             $emails = array('sanjay.kumar@netprophetsglobal.com','jugendra.singh@netprophetsglobal.com');
             $data = ['requestStatus' => $requestStatus,'designation'=>$request->input('designation'),'name'=>Auth::user()->name];
-
-            Mail::send('email.request', $data, function($message) use ($emails, $requestStatus) {
+            $name = Auth::user()->name;
+            Mail::send('email.request', $data, function($message) use ($emails, $requestStatus,$name) {
                 $message->to($emails);
                 $message->from('hrd@netprophetsglobal.com', 'hrd'); 
-                $message->subject('NP: New Recruitment Request');
+                $message->subject('You have got a new Recruitment request from '.$name);
             });
         }
         catch(Exception $e){
@@ -243,11 +243,12 @@ class RecruitmentInformationController extends Controller
     {
         $interviewerString = implode(',',$request->input('interviewer'));
         $interviewer = $request->input('interviewer');
+        $candidate_name = $request->input('candidate_name');
 
         $interview_evaluation = new InterviewEvaluation();
         $interview_evaluation->user_id = Auth::user()->id;
         $interview_evaluation->date_of_request = date('y-m-d');
-        $interview_evaluation->candidate_name = $request->input('candidate_name');
+        $interview_evaluation->candidate_name = $candidate_name;
         $interview_evaluation->skill = $request->input('skill');
         $interview_evaluation->interviewer = $interviewerString;
         $interview_evaluation->status = 1;
@@ -270,14 +271,23 @@ class RecruitmentInformationController extends Controller
             // Get Interviewer Email Ids for Mail
             $interviewerEmails = Interviewer::whereIn('emp_id',$interviewer)->get()->toArray();
             $emails = array_column($interviewerEmails, 'email');
+            $recipientsName = array_column($interviewerEmails, 'name');
+            $recipientsArr = array_combine($emails,$recipientsName);
             // $emails = array('sanjay.kumar@netprophetsglobal.com','jugendra.singh@netprophetsglobal.com');
-            $data = ['candidate_name'=>$request->input('candidate_name'),'skill'=>$request->input('skill'),'interview_evaluation_id'=>base64_encode(base64_encode(base64_encode($interview_evaluation->id))),'interviewerString'=>base64_encode(base64_encode(base64_encode($interviewerString)))];
+            if(count($recipientsArr)>0)
+            {
+                foreach($recipientsArr as $emailArr=>$nameArr)
+                {
+                    $data = ['candidate_name'=>$request->input('candidate_name'),'skill'=>$request->input('skill'),'interview_evaluation_id'=>base64_encode(base64_encode(base64_encode($interview_evaluation->id))),'interviewerString'=>base64_encode(base64_encode(base64_encode($interviewerString))),'name'=>$nameArr];
 
-            Mail::send('email.interview_evaluation', $data, function($message) use ($emails) {
-                $message->to($emails);
-                $message->from('hrd@netprophetsglobal.com', 'hrd'); 
-                $message->subject('NP: Interview Evaluation Request');
-            });
+                    Mail::send('email.interview_evaluation', $data, function($message) use ($emailArr,$candidate_name) {
+                        $message->to($emailArr);
+                        $message->from('hrd@netprophetsglobal.com', 'hrd'); 
+                        $message->subject('We value your feedback for '.$candidate_name);
+                    });   
+                }
+            }
+
         }
         catch(Exception $e){
             // echo 'successdasf';
@@ -342,12 +352,13 @@ class RecruitmentInformationController extends Controller
         try{
             // $emails = array('lydia.george@netprophetsglobal.com','Shobhana.Bansal@netprophetsglobal.com');
             $emails = array('sanjay.kumar@netprophetsglobal.com');
-            $data = ['candidate_name' => $request->candidate_name,'skill'=>$request->skill,'technological_skills'=>$request->technological_skills,'result'=>$request->result,'comments'=>$request->comments];
+            $candidate_name = $request->candidate_name;
+            $data = ['candidate_name' => $request->candidate_name,'skill'=>$request->skill,'technological_skills'=>$request->technological_skills,'result'=>$request->result,'comments'=>$request->comments,'projectManager'=> Auth::user()->name];
 
-            Mail::send('email.interview_evaluation_feedback', $data, function($message) use ($emails) {
+            Mail::send('email.interview_evaluation_feedback', $data, function($message) use ($emails,$candidate_name) {
                 $message->to($emails);
                 $message->from('hrd@netprophetsglobal.com', 'hrd'); 
-                $message->subject('NP: Interview Evaluation Feedback');
+                $message->subject('Interview Feedback - '.$candidate_name);
             });
         }
         catch(Exception $e){
