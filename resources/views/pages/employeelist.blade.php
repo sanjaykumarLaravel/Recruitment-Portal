@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Interview Evaluation List')
+@section('title', 'Candidate List')
 @section('content')
 @include('include.sidebar')
 <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
@@ -9,9 +9,9 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
             <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
-            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Employee</li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Candidate</li>
           </ol>
-          <h6 class="font-weight-bolder mb-0">Employee List</h6>
+          <h6 class="font-weight-bolder mb-0">Candidate List</h6>
         </nav>
       </div>
     </nav>
@@ -31,8 +31,8 @@
         <div class="card my-4">
           <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
             <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3 d-flex justify-content-between px-3">
-              <h6 class="text-white text-capitalize">Employee List</h6>
-                <a href="#" data-bs-toggle="modal" data-bs-target="#employeeModal" style="color: #fff; border: 1px solid #fff; line-height: 2; padding: 0 9px; border-radius: 8px;">Employee list upload</a>
+              <h6 class="text-white text-capitalize">Candidate List</h6>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#employeeModal" style="color: #fff; border: 1px solid #fff; line-height: 2; padding: 0 9px; border-radius: 8px;">Import Candidate list</a>
             </div>              
           </div>
 
@@ -107,7 +107,7 @@
             <!-- Modal content-->
             <div class="modal-content">
               <div class="modal-header">
-                  <h4 class="modal-title">HR comments</h4>
+                  <h4 class="modal-title">Import Candidate List:</h4>
                   <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
               </div>
               <form method="post" action="{{route('save-employee-upload')}}" enctype="multipart/form-data">
@@ -126,7 +126,7 @@
                   <div class="modal-footer">
                     <div class="row my-2">
                         <div class="col-lg-6 col-sm-6 col-12">
-                          <button class="btn bg-gradient-success mb-0 toast-btn" style="width: 142px !important"  type="submit" data-target="successToast">Export data</button>
+                          <button class="btn bg-gradient-success mb-0 toast-btn" style="width: 142px !important"  type="submit" data-target="successToast">Upload</button>
                         </div>
                         <div class="col-lg-6 col-sm-6 col-12">
                           <button type="button" class="btn bg-gradient-default" data-bs-dismiss="modal">Close</button>
