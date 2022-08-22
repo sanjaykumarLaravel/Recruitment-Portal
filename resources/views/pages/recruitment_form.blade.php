@@ -39,7 +39,7 @@
                 <div class="col-lg-6 col-md-6 col-12 mx-auto">
                   <label class="form-label">Position Required by Date <spna class="text-danger">*</spna></label>
                   <div class="input-group input-group-outline">
-                    <input id="position_required_by_date" type="date" class="form-control @error('position_required_by_date') is-invalid @enderror" name="position_required_by_date" value="{{ old('position_required_by_date') }}" required autocomplete="position_required_by_date" autofocus  placeholder="dd-mm-yyyy">
+                    <input id="position_required_by_date" type="text" class="form-control @error('position_required_by_date') is-invalid @enderror" name="position_required_by_date" value="{{ old('position_required_by_date') }}" required autocomplete="position_required_by_date"  placeholder="dd/mm/yyyy">
                     @error('position_required_by_date')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -265,4 +265,14 @@ $(document).ready(function(){
  });
  });
 </script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+  <script>
+    $(document).ready(function () {
+      $(function() {
+        $( "#position_required_by_date" ).datepicker({dateFormat: 'dd/mm/yy',minDate: 0});
+      });
+    });
+  </script>
+
 @endsection
