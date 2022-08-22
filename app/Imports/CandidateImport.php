@@ -2,12 +2,12 @@
 
 namespace App\Imports;
 
-use App\Models\Employee;
+use App\Models\Candidate;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 
 
-class EmployeeImport implements ToModel,WithStartRow
+class CandidateImport implements ToModel,WithStartRow
 {
     /**
     * @param array $row
@@ -21,7 +21,7 @@ class EmployeeImport implements ToModel,WithStartRow
     public function model(array $row)
     {
         // dd($row);
-        return new Employee([
+        return new Candidate([
             'name'              => $row[1],
             'experience'        => $row[2],
             'technology'        => $row[3],
@@ -34,7 +34,7 @@ class EmployeeImport implements ToModel,WithStartRow
             // 'joined'            => $row[10],            
             'joined'            =>  \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[10])->format('d-m-Y'),            
             'status'            => 1,
-            'skills'            => $row[12]           
+            // 'skills'            => $row[12]           
         ]);
     }
 }

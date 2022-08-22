@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddSkillsToEmployeesTable extends Migration
+class AddSkillsToCandidatesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddSkillsToEmployeesTable extends Migration
      */
     public function up()
     {
-        Schema::table('employees', function (Blueprint $table) {
-            $table->text('skills')->after('status');
+        Schema::table('candidates', function (Blueprint $table) {
+            $table->text('skills')->after('status')->nullable();
         });
     }
 
@@ -25,7 +25,7 @@ class AddSkillsToEmployeesTable extends Migration
      */
     public function down()
     {
-        Schema::table('employees', function (Blueprint $table) {
+        Schema::table('candidates', function (Blueprint $table) {
             $table->dropColumn('skills');
         });
     }

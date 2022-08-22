@@ -147,7 +147,7 @@
             <!-- Modal content-->
             <div class="modal-content">
               <div class="modal-header">
-                  <h4 class="modal-title">HR comments</h4>
+                  <h4 class="modal-title">Skills:</h4>
                   
                   <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
               </div>
@@ -157,7 +157,7 @@
                     <div class="row my-2">
                       <div class="col-lg-12 col-md-12 col-12 mx-auto">
                           <label class="form-label">
-                            File Upload 
+                            Skills 
                             <spna class="text-danger">*</spna>
                           </label>
                           <div class="input-group input-group-outline">

@@ -44,6 +44,6 @@ Route::post('/save-interview-evaluation-feedback', [App\Http\Controllers\Recruit
 
 // Route::get('/testemail', [App\Http\Controllers\RecruitmentInformationController::class, 'testEmail'])->name('testemail');
 
-Route::get('/employee-list', [App\Http\Controllers\RecruitmentInformationController::class, 'employeelist'])->name('employee-list');
-Route::post('/save-employee-upload', [App\Http\Controllers\RecruitmentInformationController::class, 'saveemployeeupload'])->name('save-employee-upload');
-Route::post('/employee-silks-update', [App\Http\Controllers\RecruitmentInformationController::class, 'employeesilksupdate'])->name('employee-silks-update');
+Route::get('/candidate-list', [App\Http\Controllers\RecruitmentInformationController::class, 'employeelist'])->name('employee-list');
+Route::post('/save-candidate-upload', [App\Http\Controllers\RecruitmentInformationController::class, 'saveemployeeupload'])->name('save-employee-upload');
+Route::post('/candidate-silks-update', [App\Http\Controllers\RecruitmentInformationController::class, 'employeesilksupdate'])->name('employee-silks-update');

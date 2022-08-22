@@ -14,8 +14,8 @@ use App\Models\InterviewEvaluation;
 use App\Models\InterviewEvaluationFeedback;
 use App\Models\verifiedusersinformation;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Imports\EmployeeImport;
-use App\Models\Employee;
+use App\Imports\CandidateImport;
+use App\Models\Candidate;
 // use App\Exports\UsersExport;
 
 class RecruitmentInformationController extends Controller
@@ -399,12 +399,12 @@ class RecruitmentInformationController extends Controller
 
 
     public function employeelist(){
-        $employee = Employee::orderBy('created_at', 'desc')->paginate(10);
+        $employee = Candidate::orderBy('created_at', 'desc')->paginate(10);
         return view('pages.employeelist',compact('employee'));
     }
    
     public function saveemployeeupload(Request $request){
-        Excel::import(new EmployeeImport, $request->file('employeefile')->store('temp'));
+        Excel::import(new CandidateImport, $request->file('employeefile')->store('temp'));
         return redirect()->route('employee-list')->with('message', 'File Upload Successfully');
     }
     
@@ -412,11 +412,11 @@ class RecruitmentInformationController extends Controller
 
         $original_array = $request->employeesilks;
         $string_version = implode(',', $original_array);
-        $update = Employee::find($request->employeeid);
+        $update = Candidate::find($request->employeeid);
         $update->skills = $string_version;
         $update->save();
         
-        return redirect()->route('employee-list')->with('message', 'Employee Skills Update');
+        return redirect()->route('employee-list')->with('message', 'Candidate skills updated.');
     }
 
 }
