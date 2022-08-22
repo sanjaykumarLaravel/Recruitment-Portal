@@ -43,3 +43,7 @@ Route::get('/interview-evaluation-feedback/{id}/{interviewers}', [App\Http\Contr
 Route::post('/save-interview-evaluation-feedback', [App\Http\Controllers\RecruitmentInformationController::class, 'SaveInterviewEvaluationFeedback'])->name('save-interview-evaluation-feedback');
 
 // Route::get('/testemail', [App\Http\Controllers\RecruitmentInformationController::class, 'testEmail'])->name('testemail');
+
+Route::get('/employee-list', [App\Http\Controllers\RecruitmentInformationController::class, 'employeelist'])->name('employee-list');
+Route::post('/save-employee-upload', [App\Http\Controllers\RecruitmentInformationController::class, 'saveemployeeupload'])->name('save-employee-upload');
+Route::post('/employee-silks-update', [App\Http\Controllers\RecruitmentInformationController::class, 'employeesilksupdate'])->name('employee-silks-update');
