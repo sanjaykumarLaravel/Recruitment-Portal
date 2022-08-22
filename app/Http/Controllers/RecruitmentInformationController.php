@@ -395,6 +395,7 @@ class RecruitmentInformationController extends Controller
         return view('pages.interview_evaluation_view',compact('interview_evaluation_view'));
     }
 
+
     public function employeelist(){
         $employee = Employee::orderBy('created_at', 'desc')->paginate(10);
         return view('pages.employeelist',compact('employee'));
@@ -415,6 +416,5 @@ class RecruitmentInformationController extends Controller
         
         return redirect()->route('employee-list')->with('message', 'Employee Skills Update');
     }
-
 
 }
