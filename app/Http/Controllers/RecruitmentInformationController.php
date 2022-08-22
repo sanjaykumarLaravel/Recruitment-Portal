@@ -13,6 +13,10 @@ use App\Models\RecInterviewerList;
 use App\Models\InterviewEvaluation;
 use App\Models\InterviewEvaluationFeedback;
 use App\Models\verifiedusersinformation;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\EmployeeImport;
+use App\Models\Employee;
+// use App\Exports\UsersExport;
 
 class RecruitmentInformationController extends Controller
 {
@@ -393,5 +397,26 @@ class RecruitmentInformationController extends Controller
         return view('pages.interview_evaluation_view',compact('interview_evaluation_view'));
     }
 
+
+    public function employeelist(){
+        $employee = Employee::orderBy('created_at', 'desc')->paginate(10);
+        return view('pages.employeelist',compact('employee'));
+    }
+   
+    public function saveemployeeupload(Request $request){
+        Excel::import(new EmployeeImport, $request->file('employeefile')->store('temp'));
+        return redirect()->route('employee-list')->with('message', 'File Upload Successfully');
+    }
+    
+    public function employeesilksupdate(Request $request){
+
+        $original_array = $request->employeesilks;
+        $string_version = implode(',', $original_array);
+        $update = Employee::find($request->employeeid);
+        $update->skills = $string_version;
+        $update->save();
+        
+        return redirect()->route('employee-list')->with('message', 'Employee Skills Update');
+    }
 
 }
