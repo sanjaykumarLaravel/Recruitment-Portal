@@ -103,7 +103,7 @@
               </div>
               <div class="row my-2">
                 <div class="col-lg-12 col-md-12 col-12 mx-auto">
-                  <label class="form-label">Comments </label>
+                  <label class="form-label">Brief Evaluation </label>
                   <div class="input-group input-group-outline">
                     <textarea name="comments" id="comments" required></textarea>
                     @error('comments')

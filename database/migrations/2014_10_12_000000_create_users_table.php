@@ -18,6 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->integer('employee_type');
+            $table->integer('emp_id');
             $table->string('social_id');
             $table->string('social_type');
             $table->timestamp('email_verified_at')->nullable();

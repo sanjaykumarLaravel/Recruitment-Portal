@@ -198,7 +198,7 @@
                 </div>
                 @if(auth()->user()->employee_type==1 || auth()->user()->employee_type==2)
                   <div class="col-lg-6 col-5 my-auto text-end">
-                    <a class="btn btn-outline-primary btn-sm mb-0" href="{{route('crate-recruitment-request')}}">Add New Request</a>
+                    <a class="btn btn-outline-primary btn-sm mb-0" href="{{route('crate-recruitment-request')}}">Raise a Request</a>
                   </div>
                 @endif
               </div>
@@ -209,15 +209,15 @@
                   <thead>
                     <tr>
                       @if(auth()->user()->employee_type==1 || auth()->user()->employee_type==3)
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Requested By</th>
+                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" style="text-align:center">Requested By</th>
                       @endif                        
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Date of Request</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"  style="text-align:center">Date of Request</th>
                       <!-- <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Number of Positions</th> -->
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Experience/Positions</th>
+                      {{-- <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Experience/Positions</th> --}}
                       <!-- <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Designation</th> -->
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Department</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Skills</th>
-                      <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Interviewer</th>
+                      {{-- <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Interviewer</th> --}}
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
                     </tr>
                   </thead>
@@ -238,7 +238,7 @@
                                 <!-- <td class="align-middle text-center text-sm">
                                     {{$data->positions}}
                                 </td> -->
-                                <td class="align-middle text-center text-sm">
+                                {{-- <td class="align-middle text-center text-sm">
                                     @php
                                       if(isset($data->years_of_experience))
                                       {
@@ -257,7 +257,7 @@
                                         }
                                       }
                                     @endphp
-                                </td>
+                                </td> --}}
                                 <!-- <td class="align-middle text-center text-sm">
                                     {{$data->designation}}
                                 </td> -->
@@ -267,7 +267,7 @@
                                 <td class="align-middle text-center text-sm">
                                     {{$data->mandatory_skills}}
                                 </td>
-                                <td class="align-middle text-center text-sm">
+                                {{-- <td class="align-middle text-center text-sm">
                                 @php
                                   if(isset($data['RecInterviewerList']))
                                   {
@@ -304,7 +304,7 @@
                                     echo '-';
                                   }
                                 @endphp
-                                </td>
+                                </td>--}}
                                 <td class="align-middle text-center text-sm">
                                     @if($data->status==1)
                                         <span class="badge badge-sm bg-gradient-secondary">Pending</span>

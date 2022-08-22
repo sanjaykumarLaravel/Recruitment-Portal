@@ -159,7 +159,7 @@
                                       <!-- Modal content-->
                                       <div class="modal-content">
                                         <div class="modal-header">
-                                          <h4 class="modal-title">Reply on Request</h4>
+                                          <h4 class="modal-title">HR comments</h4>
                                           <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
                                         </div>
                                         <form method="post" action="{{route('save-recruitment-comment')}}">

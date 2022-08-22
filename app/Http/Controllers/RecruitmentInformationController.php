@@ -12,6 +12,11 @@ use App\Models\Interviewer;
 use App\Models\RecInterviewerList;
 use App\Models\InterviewEvaluation;
 use App\Models\InterviewEvaluationFeedback;
+use App\Models\verifiedusersinformation;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\EmployeeImport;
+use App\Models\Employee;
+// use App\Exports\UsersExport;
 
 class RecruitmentInformationController extends Controller
 {
@@ -107,13 +112,14 @@ class RecruitmentInformationController extends Controller
         try{
             $requestStatus = 'Pending';
             // $emails = array('lydia.george@netprophetsglobal.com','Shobhana.Bansal@netprophetsglobal.com');
-            $emails = array('sanjay.kumar@netprophetsglobal.com','jugendra.singh@netprophetsglobal.com');
+            $emails = array('sanjay.kumar@netprophetsglobal.com','jugendra.singh@netprophetsglobal.com','ankit.katiyar@netprophetsglobal.com');
+            $name = Auth::user()->name;
             $data = ['requestStatus' => $requestStatus,'designation'=>$request->input('designation'),'name'=>Auth::user()->name];
-
-            Mail::send('email.request', $data, function($message) use ($emails, $requestStatus) {
+            $name = Auth::user()->name;
+            Mail::send('email.request', $data, function($message) use ($emails, $requestStatus,$name) {
                 $message->to($emails);
                 $message->from('hrd@netprophetsglobal.com', 'hrd'); 
-                $message->subject('NP: New Recruitment Request');
+                $message->subject('You have got a new Recruitment request from '.$name);
             });
         }
         catch(Exception $e){
@@ -160,7 +166,7 @@ class RecruitmentInformationController extends Controller
         $save->comments = $request->input('comments');
         $save->save();
 
-        $update = RecruitmentInformation::with('User')->find($request->input('rec_id'));
+        $update = RecruitmentInformation::find($request->input('rec_id'));
         $update->status = $request->input('status');
         $update->save();
 
@@ -204,25 +210,29 @@ class RecruitmentInformationController extends Controller
 
     }
 
+    /**
+     * Get Interview Evaluation
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function InterviewEvaluation()
     {
         $employee_type = Auth::user()->employee_type;
         $user_id = Auth::user()->id;
-        if($employee_type==1 || $employee_type==3)
-        {
-            $recruitmentData = RecruitmentInformation::with(['User','RecInterviewerList'=>function($recinteList){
-            $recinteList->with('Interviewer');
-        }])->orderBy('created_at', 'DESC')->limit(10)->get();
-        }
-        else
-        {
-            $recruitmentData = RecruitmentInformation::with(['User','RecInterviewerList'=>function($recinteList){
-            $recinteList->with('Interviewer');
-        }])->where('user_id',$user_id)->orderBy('created_at', 'DESC')->limit(10)->get();
+        if($employee_type==1 || $employee_type==3){
+            $recruitmentData = InterviewEvaluation::orderBy('created_at', 'desc')->paginate(10);
+        }else{
+            $$recruitmentData = InterviewEvaluation::orderBy('created_at', 'desc')->paginate(10);
         }
         
         return view('pages.interview_evaluation',compact('recruitmentData'));
     }
+
+    /**
+     * Create the Interview Evaluation Form
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function CreateInterviewEvaluation()
     {
         $interviewer = Interviewer::where('status',1)->get();
@@ -230,7 +240,7 @@ class RecruitmentInformationController extends Controller
     }
 
     /**
-     * Save the Recuitment Information
+     * Save the Interview Evaluation
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
@@ -238,11 +248,12 @@ class RecruitmentInformationController extends Controller
     {
         $interviewerString = implode(',',$request->input('interviewer'));
         $interviewer = $request->input('interviewer');
+        $candidate_name = $request->input('candidate_name');
 
         $interview_evaluation = new InterviewEvaluation();
         $interview_evaluation->user_id = Auth::user()->id;
         $interview_evaluation->date_of_request = date('y-m-d');
-        $interview_evaluation->candidate_name = $request->input('candidate_name');
+        $interview_evaluation->candidate_name = $candidate_name;
         $interview_evaluation->skill = $request->input('skill');
         $interview_evaluation->interviewer = $interviewerString;
         $interview_evaluation->status = 1;
@@ -255,6 +266,7 @@ class RecruitmentInformationController extends Controller
                 $interview_evaluation_feedback = new InterviewEvaluationFeedback();
                 $interview_evaluation_feedback->interview_evaluation_id = $interview_evaluation->id;
                 $interview_evaluation_feedback->interviewer_id = $intData;
+                $interview_evaluation_feedback->status = 0;
                 $interview_evaluation_feedback->save();
             }
         }
@@ -263,15 +275,26 @@ class RecruitmentInformationController extends Controller
         try{
             // Get Interviewer Email Ids for Mail
             $interviewerEmails = Interviewer::whereIn('emp_id',$interviewer)->get()->toArray();
+            $names = array_column($interviewerEmails, 'name');
+            $pm_names_array = implode(", ",$names);
             $emails = array_column($interviewerEmails, 'email');
+            $recipientsName = array_column($interviewerEmails, 'name');
+            $recipientsArr = array_combine($emails,$recipientsName);
             // $emails = array('sanjay.kumar@netprophetsglobal.com','jugendra.singh@netprophetsglobal.com');
-            $data = ['candidate_name'=>$request->input('candidate_name'),'skill'=>$request->input('skill'),'interview_evaluation_id'=>base64_encode(base64_encode(base64_encode($interview_evaluation->id))),'interviewerString'=>base64_encode(base64_encode(base64_encode($interviewerString)))];
+            if(count($recipientsArr)>0)
+            {
+                foreach($recipientsArr as $emailArr=>$nameArr)
+                {
+                    $data = ['candidate_name'=>$request->input('candidate_name'),'skill'=>$request->input('skill'),'interview_evaluation_id'=>base64_encode(base64_encode(base64_encode($interview_evaluation->id))),'interviewerString'=>base64_encode(base64_encode(base64_encode($interviewerString))),'name'=>$nameArr];
 
-            Mail::send('email.interview_evaluation', $data, function($message) use ($emails) {
-                $message->to($emails);
-                $message->from('hrd@netprophetsglobal.com', 'hrd'); 
-                $message->subject('NP: Interview Evaluation Request');
-            });
+                    Mail::send('email.interview_evaluation', $data, function($message) use ($emailArr,$candidate_name) {
+                        $message->to($emailArr);
+                        $message->from('hrd@netprophetsglobal.com', 'hrd'); 
+                        $message->subject('We value your feedback for '.$candidate_name);
+                    });   
+                }
+            }
+
         }
         catch(Exception $e){
             // echo 'successdasf';
@@ -281,6 +304,11 @@ class RecruitmentInformationController extends Controller
         return redirect()->route('interview-evaluation')->with('message', 'Interview Evaluation Request sent successfully.');
 
     }
+    /**
+     * Interview Evaluation Feedback Form
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function InterviewEvaluationFeedback($interviewevaluationId ='',$interviewers='')
     {
         $interviewevaluationId = base64_decode(base64_decode(base64_decode($interviewevaluationId)));
@@ -295,7 +323,7 @@ class RecruitmentInformationController extends Controller
         }
 
         // Check Interviewer emp_id is same or not
-        $interviewer = Interviewer::where('email',Auth::user()->email)->first();
+        $interviewer = Interviewer::where('emp_id',Auth::user()->emp_id)->first();
         // Check Interviewer assign the interview
         $get_interview_evaluation = InterviewEvaluationFeedback::where('interview_evaluation_id',$interviewevaluationId)->where('interviewer_id',$interviewer->emp_id)->first();
         if(isset($get_interview_evaluation->interviewer_id) && in_array($get_interview_evaluation->interviewer_id,$interviewerArr))
@@ -312,25 +340,32 @@ class RecruitmentInformationController extends Controller
         }
         return view('pages.interview_evaluation_feedback',compact('interviewEvaluation'));
     }
+    /**
+     * Save the Interview Evaluation Feedback form
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function SaveInterviewEvaluationFeedback(Request $request)
     {
-        $interviewer = Interviewer::where('email',Auth::user()->email)->first();
+        $interviewer = Interviewer::where('emp_id',Auth::user()->emp_id)->first();
         $interview_evaluation = InterviewEvaluationFeedback::where('interview_evaluation_id',$request->inter_eval_id)->where('interviewer_id',$interviewer->emp_id) ->update([
            'technological_skills' => $request->technological_skills,
            'comments' => $request->comments,
            'result' => $request->result,
+           'status' => 1,
            'candidate_attitude' => ''
         ]);
         // For Mail
         try{
             // $emails = array('lydia.george@netprophetsglobal.com','Shobhana.Bansal@netprophetsglobal.com');
             $emails = array('sanjay.kumar@netprophetsglobal.com');
-            $data = ['candidate_name' => $request->candidate_name,'skill'=>$request->skill,'technological_skills'=>$request->technological_skills,'result'=>$request->result,'comments'=>$request->comments];
+            $candidate_name = $request->candidate_name;
+            $data = ['candidate_name' => $request->candidate_name,'skill'=>$request->skill,'technological_skills'=>$request->technological_skills,'result'=>$request->result,'comments'=>$request->comments,'projectManager'=> Auth::user()->name];
 
-            Mail::send('email.interview_evaluation_feedback', $data, function($message) use ($emails) {
+            Mail::send('email.interview_evaluation_feedback', $data, function($message) use ($emails,$candidate_name) {
                 $message->to($emails);
                 $message->from('hrd@netprophetsglobal.com', 'hrd'); 
-                $message->subject('NP: Interview Evaluation Feedback');
+                $message->subject('Interview Feedback - '.$candidate_name);
             });
         }
         catch(Exception $e){
@@ -340,6 +375,45 @@ class RecruitmentInformationController extends Controller
 
         return redirect()->route('home')->with('message', 'Interview Evaluation Feedback successfully submitted.');
 
+    }
+    /**
+     * Viw the Interview Evaluation Feedback
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function interviewevaluationview($id=''){
+        // dd($id);
+        $interview_evaluation_view = InterviewEvaluationFeedback::with(['VerifiedUsersInformation'=>function($verUser){
+            $verUser->select('emp_id','name','email','designation');
+        }])->where('interview_evaluation_id',$id)->get();
+        $interviewer_id = $interview_evaluation_view[0]['interviewer_id'];
+        // dd($interviewer_id);
+        // $interview_eva_view = verifiedusersinformation::where('emp_id',$interviewer_id)->get();
+        
+        // echo '<pre>';print_r($interview_evaluation_view[0]['interviewer_id']);exit;
+        // dd($interview_evaluation_view);
+        return view('pages.interview_evaluation_view',compact('interview_evaluation_view'));
+    }
+
+    public function employeelist(){
+        $employee = Employee::orderBy('created_at', 'desc')->paginate(10);
+        return view('pages.employeelist',compact('employee'));
+    }
+   
+    public function saveemployeeupload(Request $request){
+        Excel::import(new EmployeeImport, $request->file('employeefile')->store('temp'));
+        return redirect()->route('employee-list')->with('message', 'File Upload Successfully');
+    }
+    
+    public function employeesilksupdate(Request $request){
+
+        $original_array = $request->employeesilks;
+        $string_version = implode(',', $original_array);
+        $update = Employee::find($request->employeeid);
+        $update->skills = $string_version;
+        $update->save();
+        
+        return redirect()->route('employee-list')->with('message', 'Employee Skills Update');
     }
 
 
