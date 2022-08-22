@@ -78,11 +78,13 @@ class RecruitmentInformationController extends Controller
         // echo $number_of_positions;
         // echo "</br>";
         // echo $number_of_positions;
-        // dd(($interviewer));
+        $positionReqDate = str_replace('/', '-', $request->input('position_required_by_date'));
+        $positionReqDateFormat = date('Y-m-d', strtotime($positionReqDate));
+
         $save = new RecruitmentInformation();
         $save->user_id = Auth::user()->id;
         $save->date_of_request = date('y-m-d');
-        $save->position_required_by_date = $request->input('position_required_by_date');
+        $save->position_required_by_date = $positionReqDateFormat;
         $save->positions = $number_of_positions;
         $save->years_of_experience = $years_of_experience;
         $save->designation = $request->input('designation');
